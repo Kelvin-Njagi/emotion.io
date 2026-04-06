@@ -1,13 +1,21 @@
 # models/audio_processor.py
 
 import numpy as np
-import sounddevice as sd
 import librosa
 import queue
 import threading
 import time
 import streamlit as st
 from scipy import signal
+
+# Try to import sounddevice, but handle gracefully if not available (e.g., in Streamlit Cloud)
+try:
+    import sounddevice as sd
+    SOUNDDEVICE_AVAILABLE = True
+except (ImportError, OSError) as e:
+    SOUNDDEVICE_AVAILABLE = False
+    sd = None
+    print(f"Warning: sounddevice not available: {e}. Audio recording features will be disabled.")
 
 class AudioProcessor:
     def __init__(self, sample_rate=16000, chunk_duration=3):
@@ -21,6 +29,12 @@ class AudioProcessor:
         
     def start_stream(self, callback=None):
         """Start audio stream using sounddevice"""
+        if not SOUNDDEVICE_AVAILABLE:
+            print("Error: sounddevice is not available in this environment.")
+            print("This is common in cloud environments like Streamlit Cloud.")
+            print("Please ensure packages.txt contains: libportaudio2 and libsndfile1")
+            return False
+        
         self.is_recording = True
         self.audio_callback = callback
         

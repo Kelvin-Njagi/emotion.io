@@ -1,0 +1,14 @@
+# Streamlit Configuration for Cloud Deployment
+
+[theme]
+primaryColor = "#667eea"
+backgroundColor = "#f0f2f6"
+secondaryBackgroundColor = "#e8eef9"
+textColor = "#2c3e50"
+font = "sans serif"
+
+[logger]
+level = "info"
+
+[client]
+showErrorDetails = true
