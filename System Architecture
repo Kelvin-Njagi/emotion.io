@@ -1,0 +1,22 @@
+speech-emotion-system/
+├── app.py                 # Main application entry point
+├── database/
+│   ├── db_manager.py     # Database operations
+│   └── schema.sql        # Database schema
+├── auth/
+│   ├── authentication.py # Login, registration, session management
+│   └── security.py       # Password hashing, security functions
+├── models/
+│   ├── emotion_model.py  # CNN model for emotion recognition
+│   └── audio_processor.py # Audio preprocessing and feature extraction
+├── pages/
+│   ├── admin_dashboard.py
+│   ├── user_dashboard.py
+│   ├── emotion_analysis.py
+│   ├── system_logs.py
+│   └── user_management.py
+├── utils/
+│   ├── logger.py         # System logging
+│   └── realtime_analytics.py # Real-time metrics
+├── requirements.txt
+└── run.py
