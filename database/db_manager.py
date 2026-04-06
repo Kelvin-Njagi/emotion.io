@@ -32,8 +32,7 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
             if cursor.fetchone():  # Tables already exist
-                self.ensure_default_admin()
-                return
+                return  # Don't reinitialize, admin user already exists
         
         # Only load and execute schema on first run
         with open("database/schema.sql", "r") as f:
