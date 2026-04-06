@@ -1,6 +1,16 @@
 # app.py
 
 import streamlit as st
+
+# IMPORTANT: set_page_config() must be the FIRST Streamlit command
+st.set_page_config(
+    page_title="Speech-Driven Emotion Recognition System",
+    page_icon="🎙️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Now import other modules after page config is set
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -16,14 +26,6 @@ from utils.logger import system_logger
 from utils.realtime_analytics import realtime_analytics
 from models.emotion_model import emotion_model
 from models.audio_processor import audio_processor
-
-# Page configuration
-st.set_page_config(
-    page_title="Speech-Driven Emotion Recognition System",
-    page_icon="🎙️",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Initialize authentication manager
 auth_manager = AuthenticationManager()
