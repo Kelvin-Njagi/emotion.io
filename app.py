@@ -945,7 +945,12 @@ def admin_dashboard():
     with col2:
         if st.button("📁 Upload Audio", key="user_upload_1"):
             st.session_state.show_upload = True
-            st.info("Audio upload interface is ready - click on 'Choose an audio file' below")
+        
+        if st.session_state.get("show_upload", False):
+            uploaded_file = st.file_uploader("Choose an audio file", type=['mp3', 'wav', 'ogg', 'm4a'], key="uploader_1")
+            if uploaded_file is not None:
+                st.success(f"✅ File uploaded: {uploaded_file.name}")
+                st.info("Processing audio for emotion analysis...")
     
     with col3:
         if st.button("📊 View Reports", key="user_reports_1"):
@@ -1292,8 +1297,9 @@ def user_dashboard():
         with col2:
             if st.button("📁 Upload Audio", key="user_upload"):
                 st.session_state.show_upload = True
-                # Show file uploader
-                uploaded_file = st.file_uploader("Choose an audio file", type=['mp3', 'wav', 'ogg', 'm4a'])
+            
+            if st.session_state.get("show_upload", False):
+                uploaded_file = st.file_uploader("Choose an audio file", type=['mp3', 'wav', 'ogg', 'm4a'], key="uploader_2")
                 if uploaded_file is not None:
                     st.success(f"✅ File uploaded: {uploaded_file.name}")
                     st.info("Processing audio for emotion analysis...")
