@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from database.db_manager import db
 import time
 import threading
+import random
 
 class RealtimeAnalytics:
     def __init__(self):
@@ -14,8 +15,9 @@ class RealtimeAnalytics:
         self.cache = {}
         self.last_update = None
     
-    def get_dashboard_metrics(self):
-        """Get real-time dashboard metrics"""
+    @st.cache_data(ttl=60)  # Cache for 60 seconds
+    def get_dashboard_metrics(_self):
+        """Get real-time dashboard metrics with caching"""
         metrics = db.get_realtime_metrics()
         
         if metrics:
@@ -46,8 +48,9 @@ class RealtimeAnalytics:
             'timestamp': datetime.now()
         }
     
-    def get_emotion_trends(self, hours=24):
-        """Get emotion trends over time"""
+    @st.cache_data(ttl=60)  # Cache for 60 seconds
+    def get_emotion_trends(_self, hours=24):
+        """Get emotion trends over time with caching"""
         emotion_stats = db.get_emotion_stats()
         
         if emotion_stats.empty:
@@ -62,8 +65,9 @@ class RealtimeAnalytics:
         
         return emotion_stats
     
-    def get_performance_metrics(self):
-        """Get system performance metrics"""
+    @st.cache_data(ttl=60)  # Cache for 60 seconds
+    def get_performance_metrics(_self):
+        """Get system performance metrics with caching"""
         logs = db.get_logs(limit=1000)
         
         metrics = {
@@ -75,9 +79,10 @@ class RealtimeAnalytics:
         
         return metrics
     
-    def get_advanced_metrics(self):
-        """Get advanced analytics metrics"""
-        metrics = self.get_dashboard_metrics()
+    @st.cache_data(ttl=60)  # Cache for 60 seconds
+    def get_advanced_metrics(_self):
+        """Get advanced analytics metrics with caching"""
+        metrics = _self.get_dashboard_metrics()
 
         # Add advanced calculations
         emotion_stats = db.get_emotion_stats()
@@ -115,8 +120,9 @@ class RealtimeAnalytics:
             'system_health': 85  # Mock
         }
 
-    def get_predictive_insights(self):
-        """Generate predictive analytics insights"""
+@st.cache_data(ttl=120)  # Cache for 120 seconds (longer for predictive data)
+    def get_predictive_insights(_self):
+        """Generate predictive analytics insights with caching"""
         # Mock predictive data
         predictions = {
             'next_hour_load': random.randint(10, 50),
@@ -131,8 +137,9 @@ class RealtimeAnalytics:
         }
         return predictions
 
-    def get_user_performance_metrics(self, user_id):
-        """Get personalized performance metrics for a user"""
+    @st.cache_data(ttl=120)  # Cache for 120 seconds
+    def get_user_performance_metrics(_self, user_id):
+        """Get personalized performance metrics for a user with caching"""
         # Mock user-specific metrics
         return {
             'total_analyses': random.randint(50, 200),
@@ -143,5 +150,10 @@ class RealtimeAnalytics:
             'achievements': ['Accuracy Master', 'Speed Demon', 'Emotion Expert']
         }
 
-# Initialize realtime analytics
-realtime_analytics = RealtimeAnalytics()
+@st.cache_resource
+def get_realtime_analytics():
+    """Get cached realtime analytics instance"""
+    return RealtimeAnalytics()
+
+# Initialize realtime analytics with caching
+realtime_analytics = get_realtime_analytics()

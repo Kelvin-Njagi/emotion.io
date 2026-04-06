@@ -1,5 +1,6 @@
 # models/emotion_model.py
 
+import streamlit as st
 import numpy as np
 import librosa
 import joblib
@@ -180,4 +181,10 @@ class EmotionRecognitionModel:
         return False
 
 # Initialize model
-emotion_model = EmotionRecognitionModel()
+@st.cache_resource
+def get_emotion_model():
+    """Get cached emotion model instance"""
+    return EmotionRecognitionModel()
+
+# Initialize emotion model with caching
+emotion_model = get_emotion_model()

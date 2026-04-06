@@ -166,5 +166,10 @@ class AudioProcessor:
         except:
             return False
 
-# Initialize audio processor
-audio_processor = AudioProcessor()
+@st.cache_resource
+def get_audio_processor():
+    """Get cached audio processor instance"""
+    return AudioProcessor()
+
+# Initialize audio processor with caching
+audio_processor = get_audio_processor()

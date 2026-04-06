@@ -5,6 +5,7 @@ import os
 from contextlib import contextmanager
 from datetime import datetime, timedelta
 import pandas as pd
+import streamlit as st
 
 class DatabaseManager:
     def __init__(self, db_path="emotion_system.db"):
@@ -26,6 +27,15 @@ class DatabaseManager:
     
     def init_database(self):
         """Initialize database with schema and seed defaults"""
+        # Skip if database already exists and has tables
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            if cursor.fetchone():  # Tables already exist
+                self.ensure_default_admin()
+                return
+        
+        # Only load and execute schema on first run
         with open("database/schema.sql", "r") as f:
             schema = f.read()
         
@@ -249,5 +259,11 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute("UPDATE system_settings SET setting_value = ?, updated_by = ?, updated_at = CURRENT_TIMESTAMP WHERE setting_key = ?", (value, updated_by, key))
 
-# Initialize database
-db = DatabaseManager()
+
+@st.cache_resource
+def get_database():
+    """Get cached database instance"""
+    return DatabaseManager()
+
+# Initialize database with caching
+db = get_database()
