@@ -1,4 +1,2 @@
-# System dependencies for Streamlit Cloud
-# Audio processing libraries
 libportaudio2
 libsndfile1

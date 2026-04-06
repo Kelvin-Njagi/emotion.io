@@ -157,6 +157,8 @@ class AudioProcessor:
     
     def is_available(self):
         """Check if audio input is available"""
+        if not SOUNDDEVICE_AVAILABLE:
+            return False
         try:
             devices = sd.query_devices()
             input_devices = [d for d in devices if d['max_input_channels'] > 0]
